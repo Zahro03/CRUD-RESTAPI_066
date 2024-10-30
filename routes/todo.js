@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 
+// Definisikan todos sebagai array kosong
+let todos = [];
 
 // Mengambil semua todos
 router.get('/', (req, res) => {
@@ -20,15 +22,11 @@ router.post('/', (req, res) => {
 
 // Menghapus todo berdasarkan ID
 router.delete('/:id', (req, res) => {
-    const id = parseInt(req.params.id, 10);
-    const index = todos.findIndex(todo => todo.id === id);
+    const todoIndex = todos.findIndex(t => t.id === parseInt(req.params.id));
+    if (todoIndex === -1) return res.status(404).json({ message: 'Tugas tidak ditemukan' });
 
-    if (index !== -1) {
-        todos.splice(index, 1);
-        return res.status(200).json({ message: `Tugas dengan ID ${id} telah dihapus.` });
-    }
-
-    return res.status(404).json({ error: "Todo tidak ditemukan" });
+    const deletedTodo = todos.splice(todoIndex, 1)[0];
+    res.status(200).json({ message: `Tugas '${deletedTodo.task}' telah dihapus` });
 });
 
 // Memperbarui todo berdasarkan ID

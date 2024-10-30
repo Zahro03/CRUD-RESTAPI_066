@@ -1,19 +1,11 @@
-const express = require("express");
+const express = require('express');
+const todoRoutes = require('./routes/todo');
 const app = express();
-const todoRoutes = require('./routes/todo'); // Pastikan ini merujuk ke file yang benar
-const port = 8000;
 
-app.use(express.json()); // Middleware untuk parsing JSON
+app.use(express.json()); // Untuk parsing JSON
+app.use('/todos', todoRoutes); // Menggunakan router todos
 
-// Route untuk todos
-app.use('/todos', todoRoutes);
-
-// Endpoint untuk render halaman utama (jika perlu)
-app.get('/', (req, res) => {
-    res.send("Selamat datang di API Todo");
-});
-
-// Menjalankan server
-app.listen(port, () => {
-    console.log(`Server berjalan di http://localhost:${port}`);
+const PORT = 8000; // Pastikan port sesuai dengan yang Anda inginkan
+app.listen(PORT, () => {
+    console.log(`Server berjalan di http://localhost:${PORT}`);
 });
